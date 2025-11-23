@@ -18,3 +18,12 @@
 
 /* Enable caps-lock LED */
 #define CAPS_LOCK_LED_INDEX 44
+
+/* Added by Piervit, enable linux unicode mode.*/
+#define UNICODE_KEY_LNX LCTL(LSFT(KC_U))
+#define UNICODE_KEY_WINC KC_RIGHT_ALT
+/*For now only linux and windows support
+ * TODO: Add MAC support
+ * .*/
+#define UNICODE_SELECTED_MODES  UNICODE_MODE_LINUX, UNICODE_MODE_WINCOMPOSE
+
