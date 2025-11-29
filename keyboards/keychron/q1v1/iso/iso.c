@@ -114,3 +114,4 @@ const is31fl3733_led_t PROGMEM g_is31fl3733_leds[IS31FL3733_LED_COUNT] = {
     {1, SW6_CS16,   SW4_CS16,   SW5_CS16}
 };
 #endif // RGB_MATRIX_ENABLE
+

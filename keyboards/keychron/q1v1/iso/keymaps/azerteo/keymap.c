@@ -28,7 +28,8 @@ enum layers{
   WINAZ_BASE,       //The Windows/Linux original azerty layer
   WINAZ_FN,         //The Windows/Linux azerty function layer with only a change to allow switching to AZEL_BASE.
   AZEO_BASE,        //The Transformed azerteo layout
-  AZEO_FN           //The function layer of the transformed azerteo layout.
+  AZEO_FN,          //The function layer of the transformed azerteo layout.
+  FN_KEY            //Set the F1..F12 layer to standard mod
 };
 
 /**
@@ -60,6 +61,13 @@ const uint32_t unicode_map[] PROGMEM = {
     [EO_CAU] = 0x0108,  // Ĉ
 };
 
+const key_override_t minus_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_PPLS,KC_PMNS);
+const key_override_t div_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_PAST, KC_PSLS);
+// This globally defines all key overrides to be used
+const key_override_t *key_overrides[] = {
+    	&minus_key_override,
+        &div_key_override
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [MAC_BASE] = LAYOUT_iso_83(
@@ -82,7 +90,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [WINAZ_BASE] = LAYOUT_iso_83(
             //Base Windows layer
-        KC_ESC,             KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   KC_DEL,   KC_INS,
+        KC_ESC,             KC_P1,    KC_P2,    KC_P3,    KC_P4,    KC_P5,    KC_P6,    KC_P7,    KC_P8,    KC_P9,    KC_P0,    KC_PPLS,  KC_PAST,   KC_DEL,  KC_INS,
         KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,            KC_PGUP,
         KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,                      KC_PGDN,
         KC_CAPS,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,  KC_NUHS,  KC_ENT,             KC_HOME,
@@ -95,10 +103,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         RM_TOGG,  RM_NEXT,  RM_VALU,  RM_HUEU,  RM_SATU,  RM_SPDU,  _______,  _______,  _______,  _______,  _______,  _______,  _______,                      _______,
         _______,  RM_PREV,  RM_VALD,  RM_HUED,  RM_SATD,  RM_SPDD,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  NK_TOGG,  _______,  _______,  _______,  _______,            _______,  _______,
-        _______,  _______,  _______,                                _______,                                _______,  _______,  DF(AZEO_BASE),  _______,  _______,  _______),
+        DB_TOGG,  _______,  _______,                                _______,                                TG(FN_KEY), _______,  DF(AZEO_BASE),  _______,  _______,  _______),
     [AZEO_BASE] = LAYOUT_iso_83(
             //New azerty EO layer. Mostly azerty layer with some rebase for EO keys
-        KC_ESC,                     KC_F1,              KC_F2,              KC_F3,    KC_F4,    KC_F5,              KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,             KC_F11,   KC_F12,   KC_DEL,   KC_INS,
+        KC_ESC,                     KC_P1,              KC_P2,              KC_P3,    KC_P4,    KC_P5,              KC_P6,    KC_P7,    KC_P8,    KC_P9,    KC_P0 ,             KC_PPLS,  KC_PAST,  KC_DEL,   KC_INS,
         KC_GRV,   KC_1,             KC_2,               KC_3,               KC_4,     KC_5,     KC_6,               KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,            KC_EQL,   KC_BSPC,            KC_PGUP,
         KC_TAB,   KC_Q,             KC_W,               KC_E,               KC_R,     KC_T,     UP(EO_UA,EO_UAU),   KC_U,     KC_I,     KC_O,     KC_P,     UP(EO_JA, EO_JAU),  KC_RBRC,                      KC_PGDN,
         KC_CAPS,  UP(EO_SA,EO_SAU), KC_S,               KC_D,               KC_F,     KC_G,     KC_H,               KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,            KC_NUHS,  KC_ENT,             KC_HOME,
@@ -111,8 +119,48 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         RM_TOGG,  RM_NEXT,  RM_VALU,  RM_HUEU,  RM_SATU,  RM_SPDU,  _______,  _______,  _______,  _______,  _______,  _______,  _______,                      _______,
         _______,  RM_PREV,  RM_VALD,  RM_HUED,  RM_SATD,  RM_SPDD,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  NK_TOGG,  _______,  _______,  _______,  _______,            _______,  _______,
-        _______,  UC_NEXT,  _______,                                _______,                                _______,  _______,  DF(WINAZ_BASE),  _______,  _______,  _______)
+        DB_TOGG,  UC_NEXT,  _______,                                _______,                                TG(FN_KEY),_______,  DF(WINAZ_BASE),  _______,  _______,  _______),
+    [FN_KEY] = LAYOUT_iso_83(
+        _______,            KC_F1  ,  KC_F2  ,  KC_F3  ,  KC_F4  ,  KC_F5  ,  KC_F6  ,  KC_F7  ,  KC_F8  ,  KC_F9  ,  KC_F10 ,  KC_F11 ,  KC_F12 ,  _______,  _______,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,                      _______,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,  _______,
+        _______,  _______,  _______,                                _______,                                _______,  _______,  _______,  _______,  _______,  _______)
     };
 
 
+/**
+ * Force the num lock to be activated.
+ */
+void numlock_on(void) {
+  led_t led_state = host_keyboard_led_state();
+  bool initial_cap_lock = led_state.caps_lock;
+  if (! initial_cap_lock) {
+      tap_code(KC_CAPS_LOCK);
+  }
+  if (! led_state.num_lock) {
+      tap_code(KC_NUM_LOCK);
+  }
+  led_state = host_keyboard_led_state();
+  if (initial_cap_lock != led_state.caps_lock){
+      tap_code(KC_CAPS_LOCK);
+  }
+}
+
+void keyboard_post_init_user(void) {
+  // Call the post init code.
+  //debug_enable=true;
+  //debug_matrix=true;
+  //debug_keyboard=true;
+  //debug_mouse=true;
+  numlock_on();
+}
+
+
+
+led_t            saved_led_state;
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    return true; // Process all other keycodes normally
+}
 

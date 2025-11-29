@@ -218,6 +218,12 @@ __attribute__((weak)) void unicode_input_start(void) {
         tap_code(KC_CAPS_LOCK);
     }
 
+    // We enable the keypad every time.
+    if (!unicode_saved_led_state.num_lock) {
+        tap_code(KC_NUM_LOCK);
+    }
+
+
     unicode_saved_mods = get_mods(); // Save current mods
     clear_mods();                    // Unregister mods to start from a clean state
     clear_weak_mods();
@@ -231,14 +237,17 @@ __attribute__((weak)) void unicode_input_start(void) {
             break;
         case UNICODE_MODE_WINDOWS:
             // For increased reliability, use numpad keys for inputting digits
-            if (!unicode_saved_led_state.num_lock) {
-                tap_code(KC_NUM_LOCK);
-            }
+            //if (!unicode_saved_led_state.num_lock) {
+            //    tap_code(KC_NUM_LOCK);
+            //}
             register_code(KC_LEFT_ALT);
             wait_ms(UNICODE_TYPE_DELAY);
             tap_code(KC_KP_PLUS);
             break;
         case UNICODE_MODE_WINCOMPOSE:
+            //if (!unicode_saved_led_state.num_lock) {
+            //    tap_code(KC_NUM_LOCK);
+            //}
             tap_code(UNICODE_KEY_WINC);
             tap_code(KC_U);
             break;
@@ -312,7 +321,7 @@ __attribute__((weak)) void unicode_input_cancel(void) {
 // clang-format off
 
 static void send_nibble_wrapper(uint8_t digit) {
-    if (unicode_config.input_mode == UNICODE_MODE_WINDOWS) {
+    if (unicode_config.input_mode == UNICODE_MODE_WINDOWS || unicode_config.input_mode == UNICODE_MODE_WINCOMPOSE) {
         uint8_t kc = digit < 10
                    ? KC_KP_1 + (10 + digit - 1) % 10
                    : KC_A + (digit - 10);
@@ -369,7 +378,8 @@ void register_unicode(uint32_t code_point) {
         uint32_t lo = code_point & 0x3FF, hi = (code_point & 0xFFC00) >> 10;
         register_hex32(hi + 0xD800);
         register_hex32(lo + 0xDC00);
-    } else {
+    } else {// WINC and LINUX
+        //dprintf("Writing code_point : %u\n", code_point);
         register_hex32(code_point);
     }
     unicode_input_finish();
