@@ -22,16 +22,22 @@
 #define KC_TASK LGUI(KC_TAB)
 #define KC_FLXP LGUI(KC_E)
 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LAYERS DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
 enum layers{
   MAC_BASE,         //The original MAC layer
   MAC_FN,           //The original MAC function layer
-  WINAZ_BASE,       //The Windows/Linux original azerty layer
+  WINAZ_BASE,       //The Windows/Linux original azerty layer (F1 to F12 keys modified to be a numeric keypad)
   WINAZ_FN,         //The Windows/Linux azerty function layer with only a change to allow switching to AZEL_BASE.
-  AZEO_BASE,        //The Transformed azerteo layout
+  AZEO_BASE,        //The Transformed azerteo layout (F1 to F12 keys modified to be a numeric keypad)
   AZEO_FN,          //The function layer of the transformed azerteo layout.
   FN_KEY            //Set the F1..F12 layer to standard mod
 };
 
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%% END LAYERS DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ESPERANTO UNICODE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 /**
  * The specific esperanto letters with accent, using unicode code.
  */
@@ -61,14 +67,22 @@ const uint32_t unicode_map[] PROGMEM = {
     [EO_CAU] = 0x0108,  // Ĉ
 };
 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%% END ESPERANTO UNICODE %%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% KEY OVERRIDING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
 const key_override_t minus_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_PPLS,KC_PMNS);
 const key_override_t div_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_PAST, KC_PSLS);
+const key_override_t ctrl_w_override = ko_make_basic(MOD_MASK_CTRL, UP(EO_GA, EO_GAU), LCTL(KC_Z));
+
 // This globally defines all key overrides to be used
 const key_override_t *key_overrides[] = {
     	&minus_key_override,
-        &div_key_override
+        &div_key_override,
+        &ctrl_w_override
 };
-
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END KEY OVERRIDING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LAYERS DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+//
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [MAC_BASE] = LAYOUT_iso_83(
             //Base MAC layer
@@ -129,9 +143,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,  _______,  _______,                                _______,                                _______,  _______,  _______,  _______,  _______,  _______)
     };
 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%% END LAYERS DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%% KEYBOARD INIT FUNCTION %%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 /**
- * Force the num lock to be activated.
+ * Force the num lock to be activated. We use num lock for several reason:
+ *  - under windows: it is needed that it is activated to input correctly the unicode chars (eo codes).
+ *  - generally for the replacement of the F1 to F12 key as a numeric keypad, this numeric keypad will not work without
+ *  numlock.
  */
 void numlock_on(void) {
   led_t led_state = host_keyboard_led_state();
@@ -158,9 +177,25 @@ void keyboard_post_init_user(void) {
 }
 
 
+bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    //for (uint8_t i = led_min; i < led_max; i++) {
+    //    switch(get_highest_layer(layer_state|default_layer_state)) {
+    //        case WINAZ_BASE:
+    //            rgb_matrix_set_color(i, RGB_BLUE);
+    //            break;
+    //        case AZEO_BASE:
+    //            rgb_matrix_set_color(i, RGB_GREEN);
+    //            break;
+    //        default:
+    //            break;
+    //    }
+    //}
+    return false;
+}
 
 led_t            saved_led_state;
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true; // Process all other keycodes normally
 }
 
+//%%%%%%%%%%%%%%%%%%%%%%%%% END KEYBOARD INIT FUNCTION %%%%%%%%%%%%%%%%%%%%%%%%%% 
