@@ -22,3 +22,5 @@
 
 /* Encoder Configuration*/
 #define ENCODER_DEFAULT_POS 0x3
+/* To have the light effect to end when we shutdown the computer.*/
+#define RGB_MATRIX_SLEEP
