@@ -88,14 +88,17 @@ const key_override_t minus_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_PPLS,
 const key_override_t div_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_PAST, KC_PSLS);
 const key_override_t ctrl_w_override = ko_make_basic(MOD_MASK_CTRL, KC_H, LCTL(KC_Z));
 const key_override_t ctrl_y_override = ko_make_basic(MOD_MASK_CTRL, UP(EO_UA,EO_UAU), LCTL(KC_Z));
-const key_override_t ctrl_q_override = ko_make_basic(MOD_MASK_CTRL, UP(EO_SA,EO_SAU), LCTL(KC_Q));
+const key_override_t ctrl_q_override = ko_make_basic(MOD_MASK_CTRL, UP(EO_SA,EO_SAU), LCTL(KC_A));
 const key_override_t ctrl_x_override = ko_make_basic(MOD_MASK_CTRL, UP(EO_CA,EO_CAU), LCTL(KC_X));
 
 // This globally defines all key overrides to be used
 const key_override_t *key_overrides[] = {
     	&minus_key_override,
         &div_key_override,
-        &ctrl_w_override
+        &ctrl_w_override,
+        &ctrl_y_override,
+        &ctrl_q_override,
+        &ctrl_x_override
 };
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END KEY OVERRIDING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LAYERS DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
@@ -219,10 +222,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 //%%%%%%%%%%%%%%%%%%%%%%%%% END KEYBOARD INIT FUNCTION %%%%%%%%%%%%%%%%%%%%%%%%%% 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% KEYBOARD LIGHTING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
-#define RGB_STD_YELLOW     0xFF, 0x00, 0x00
-#define RGB_STDFN_YELLOW   0xFF, 0x00, 0x20
-#define RGB_EO_GREEN       0x00, 0xFF, 0x00
-#define RGB_EOFN_GREEN     0x00, 0xFF, 0x20
+#define RGB_STD_RED        0xFF, 0x00, 0x00 // Red, standard azery mode
+#define RGB_STDFN_RED      0xFF, 0x20, 0x00 // Red, FN azery mode 
+#define RGB_EO_GREEN       0x00, 0xFF, 0x00 // Green, EO Linux mode
+#define RGB_EOFN_GREEN     0x00, 0xFF, 0x20 // Green, EO FN Linux mode 
+#define RGB_EOWIN_BLUE     0x00, 0x00, 0xFF // Blue, EO windows mode
+#define RGB_EOWINFN_BLUE   0x20, 0x00, 0xFF // Blue, EO FN windows mode 
 #define RGB_BASEFN_OFF     0xFF, 0xFF, 0xFF // White
 #define RGB_BASEFN_ON      0x00, 0x00, 0xFF // Blue
 
@@ -248,19 +253,29 @@ bool rgb_matrix_indicators_user() {
             continue;
         }
         if (layer_state_is(WINAZ_FN)){
-            rgb_matrix_set_color(key, RGB_STDFN_YELLOW);
+            rgb_matrix_set_color(key, RGB_STDFN_RED);
         }
         else if (layer_state_is(AZEO_FN)){
-            rgb_matrix_set_color(key, RGB_EOFN_GREEN);
+            if(get_unicode_input_mode()== UNICODE_MODE_LINUX){
+                rgb_matrix_set_color(key, RGB_EOFN_GREEN);
+            }
+            else{
+                rgb_matrix_set_color(key, RGB_EOWINFN_BLUE);
+            }
         }
         else if (default_layer_state == AZEO_BASE){
             //TODO: There should be a bug here (we should here enable the RGB_EO_GREEN). But for an unknown reason the
             //behaviour is correct with this code. This is either a bug in the use of default_layer_state variable or a
             //problem in how this variable is set.
-            rgb_matrix_set_color(key, RGB_STD_YELLOW);
+            rgb_matrix_set_color(key, RGB_STD_RED);
         }
         else{
-            rgb_matrix_set_color(key, RGB_EO_GREEN);
+            if(get_unicode_input_mode()== UNICODE_MODE_LINUX){
+                rgb_matrix_set_color(key, RGB_EO_GREEN);
+            }
+            else if(get_unicode_input_mode()== UNICODE_MODE_WINCOMPOSE){
+                rgb_matrix_set_color(key, RGB_EOWIN_BLUE);
+            }
         }
 
         //switch (get_highest_layer(layer_state|default_layer_state)) {
