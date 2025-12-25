@@ -28,13 +28,17 @@
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LAYERS DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
 enum layers{
-  MAC_BASE,         //The original MAC layer
-  MAC_FN,           //The original MAC function layer
+    /*FIXED LAYERS (because the MAC/Windows switch expect to find the layers a theses positions).*/
+  MAC_BASE,         //The original MAC layer. 
+  MAC_FN,           //The original MAC function layer 
   WINAZ_BASE,       //The Windows/Linux original azerty layer (F1 to F12 keys modified to be a numeric keypad)
   WINAZ_FN,         //The Windows/Linux azerty function layer with only a change to allow switching to AZEL_BASE.
+    /*FREE ADDITIONNAL LAYERS (that we order as we want).*/
   AZEO_BASE,        //The Transformed azerteo layout (F1 to F12 keys modified to be a numeric keypad)
   AZEO_FN,          //The function layer of the transformed azerteo layout.
-  FN_KEY            //Set the F1..F12 layer to standard mod
+  FN_KEY,           //Set the F1..F12 layer to standard mod
+  MACEO_BASE,       //The MAC Esperanto layer
+  MACEO_FN,         //The MAC Esperanto function layer
 };
 
 
@@ -115,13 +119,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [MAC_FN] = LAYOUT_iso_83(
             //Base MAC function layer
+        _______,            KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,         KC_F12,   _______,  _______,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,        _______,            _______,
+        RM_TOGG,  RM_NEXT,  RM_VALU,  RM_HUEU,  RM_SATU,  RM_SPDU,  _______,  _______,  _______,  _______,  _______,  _______,  _______,                            _______,
+        _______,  RM_PREV,  RM_VALD,  RM_HUED,  RM_SATD,  RM_SPDD,  _______,  _______,  _______,  _______,  _______,  _______,  _______,        _______,            _______,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  NK_TOGG,  _______,  _______,  _______,  _______,                  _______,  _______,
+        _______,  _______,  _______,                                _______,                                _______,  _______,  DF(MACEO_BASE), _______,  _______,  _______),
+    [MACEO_BASE] = LAYOUT_iso_83(
+        KC_ESC,                     KC_BRID,  KC_BRIU,          KC_NO,    KC_NO,    RM_VALD,            RM_VALU,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_DEL,   KC_INS,
+        KC_GRV,   KC_1,             KC_2,     KC_3,             KC_4,     KC_5,     KC_6,               KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,            KC_PGUP,
+        KC_TAB,   KC_Q,             KC_W,     KC_E,             KC_R,     KC_T,     UP(EO_UA,EO_UAU),   KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,                      KC_PGDN,
+        KC_CAPS,  UP(EO_SA,EO_SAU), KC_S,     KC_D,             KC_F,     KC_G,     UP(EO_GA, EO_GAU),  KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,  KC_NUHS,  KC_ENT,             KC_HOME,
+        KC_LSFT,  UP(EO_HA, EO_HAU),KC_H,     UP(EO_CA, EO_CAU),KC_C,     KC_V,     KC_B,               KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,            KC_RSFT,  KC_UP,
+        KC_LCTL,  KC_LOPT,          KC_LCMD,                                KC_SPC,                                           KC_RCMD, MO(MACEO_FN),KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT),
+    [MACEO_FN] = LAYOUT_iso_83(
         _______,            KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   _______,  _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
         RM_TOGG,  RM_NEXT,  RM_VALU,  RM_HUEU,  RM_SATU,  RM_SPDU,  _______,  _______,  _______,  _______,  _______,  _______,  _______,                      _______,
         _______,  RM_PREV,  RM_VALD,  RM_HUED,  RM_SATD,  RM_SPDD,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  NK_TOGG,  _______,  _______,  _______,  _______,            _______,  _______,
-        _______,  _______,  _______,                                _______,                                _______,  _______,  _______,  _______,  _______,  _______),
-
+        _______,  UC_NEXT,  _______,                                _______,                                _______,  _______,  DF(MAC_BASE),  _______,  _______,  _______),
     [WINAZ_BASE] = LAYOUT_iso_83(
             //Base Windows layer
         KC_ESC,             KC_P1,    KC_P2,    KC_P3,    KC_P4,    KC_P5,    KC_P6,    KC_P7,    KC_P8,    KC_P9,    KC_P0,    KC_PPLS,  KC_PAST,   KC_DEL,  KC_INS,
@@ -222,77 +239,93 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 //%%%%%%%%%%%%%%%%%%%%%%%%% END KEYBOARD INIT FUNCTION %%%%%%%%%%%%%%%%%%%%%%%%%% 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% KEYBOARD LIGHTING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
-#define RGB_STD_RED        0xFF, 0x00, 0x00 // Red, standard azery mode
-#define RGB_STDFN_RED      0xFF, 0x20, 0x00 // Red, FN azery mode 
-#define RGB_EO_GREEN       0x00, 0xFF, 0x00 // Green, EO Linux mode
-#define RGB_EOFN_GREEN     0x00, 0xFF, 0x20 // Green, EO FN Linux mode 
-#define RGB_EOWIN_BLUE     0x00, 0x00, 0xFF // Blue, EO windows mode
-#define RGB_EOWINFN_BLUE   0x20, 0x00, 0xFF // Blue, EO FN windows mode 
-#define RGB_BASEFN_OFF     0xFF, 0xFF, 0xFF // White
-#define RGB_BASEFN_ON      0x00, 0x00, 0xFF // Blue
+int rgb_no_light[]       = {0x00, 0x00, 0x00};
+int rgb_std_blue[]       = {0x00, 0x00, 0xFF}; // Red, standard azery mode
+int rgb_stdfn_blue[]     = {0x00, 0x20, 0xFF}; // Red, FN azery mode 
+int rgb_eo_green[]       = {0x00, 0xFF, 0x00}; // Green, EO Linux mode
+int rgb_eofn_green[]     = {0x00, 0xFF, 0x20}; // Green, EO FN Linux mode 
+int rgb_eowin_blue[]     = {0x00, 0xFF, 0xFF}; // Blue, EO windows mode
+int rgb_eowinfn_blue[]   = {0x20, 0xFF, 0xFF}; // Blue, EO FN windows mode 
+int rgb_eomac_white[]    = {0xFF, 0xFF, 0xFF}; // White, EO mac mode
+int rgb_eomacfn_white[]  = {0xAA, 0xAA, 0xAA}; // Blue, EO FN mac mode 
+int rgb_basefn_white[]   = {0xFF, 0xFF, 0xFF}; // White, it means we use the classical F1-F12 keys.
+int rgb_basefn_blue[]    = {0x00, 0x00, 0xFF}; // Blue, it means wwe used the numeric keypad mod.
 
-bool rgb_matrix_indicators_user() {
-    uint8_t upper_line_last_led = 14;
-    for (uint8_t i = 0; i < upper_line_last_led; i++) {
-        if (!rgb_matrix_is_enabled()){
-            rgb_matrix_set_color(i, RGB_OFF);
-        }
-        else if(layer_state_is(FN_KEY)) {
-            rgb_matrix_set_color(i, RGB_BASEFN_OFF);
-        }
-        else{ 
-            rgb_matrix_set_color(i, RGB_BASEFN_ON);
-        }
+
+/*Manage the colors for the F1-F12 indicators. 
+ * 
+ * */
+void rgb_matrix_F1F12_indicators(void){
+    int* color = rgb_no_light;
+    //First part, select the desired color.
+    if (!rgb_matrix_is_enabled()){
+        color = rgb_no_light;
     }
+    else if(layer_state_is(FN_KEY)) {
+        color = rgb_basefn_white;
+    }
+    else{ 
+        color = rgb_basefn_blue;
+    }
+    uint8_t upper_line_last_led = 14;
+    //Second part, apply it to the matrix elements.
+    for (uint8_t i = 0; i < upper_line_last_led; i++) {
+            rgb_matrix_set_color(i, color[0], color[1], color[2]);
+    }
+}
+
+/* Manage the main mode information (AZERTY or EO). */
+void rgb_matrix_main_mode_keys(void){
     uint8_t main_mode_keys[] = {72, 80, 81, 82, 83};
     uint8_t size = sizeof(main_mode_keys)/sizeof(main_mode_keys[0]);
-    for (uint8_t i = 0; i < size; i++) {
-        uint8_t key = main_mode_keys[i];
-        if (!rgb_matrix_is_enabled()){
-            rgb_matrix_set_color(key, RGB_OFF);
-            continue;
+    int* color = rgb_no_light;
+    //First part, select the desired color.
+    if (!rgb_matrix_is_enabled()){
+        color = rgb_no_light;
+    }
+    //Manage the FN mods
+    else if (layer_state_is(WINAZ_FN) || layer_state_is(MAC_FN)){
+        color = rgb_stdfn_blue;
+    }
+    else if (layer_state_is(AZEO_FN)){
+        if(get_unicode_input_mode()== UNICODE_MODE_LINUX){
+            color = rgb_eofn_green;
         }
-        if (layer_state_is(WINAZ_FN)){
-            rgb_matrix_set_color(key, RGB_STDFN_RED);
-        }
-        else if (layer_state_is(AZEO_FN)){
-            if(get_unicode_input_mode()== UNICODE_MODE_LINUX){
-                rgb_matrix_set_color(key, RGB_EOFN_GREEN);
-            }
-            else{
-                rgb_matrix_set_color(key, RGB_EOWINFN_BLUE);
-            }
-        }
-        else if (default_layer_state == AZEO_BASE){
-            //TODO: There should be a bug here (we should here enable the RGB_EO_GREEN). But for an unknown reason the
-            //behaviour is correct with this code. This is either a bug in the use of default_layer_state variable or a
-            //problem in how this variable is set.
-            rgb_matrix_set_color(key, RGB_STD_RED);
+        else if(get_unicode_input_mode() == UNICODE_MODE_WINCOMPOSE){
+            color = rgb_eowinfn_blue;
         }
         else{
-            if(get_unicode_input_mode()== UNICODE_MODE_LINUX){
-                rgb_matrix_set_color(key, RGB_EO_GREEN);
-            }
-            else if(get_unicode_input_mode()== UNICODE_MODE_WINCOMPOSE){
-                rgb_matrix_set_color(key, RGB_EOWIN_BLUE);
-            }
+            color = rgb_eomacfn_white;
         }
-
-        //switch (get_highest_layer(layer_state|default_layer_state)) {
-        //    case WINAZ_FN:
-        //        rgb_matrix_set_color(i, RGB_STDFN_YELLOW);
-        //        break;
-        //    case WINAZ_BASE:
-        //        rgb_matrix_set_color(i, RGB_STD_YELLOW);
-        //        break;
-        //    case AZEO_FN:
-        //        rgb_matrix_set_color(i, RGB_EOFN_GREEN);
-        //        break;
-        //    case AZEO_BASE:
-        //        rgb_matrix_set_color(i, RGB_EO_GREEN);
-        //        break;
-        //}
     }
+    //Manage the standards mods
+    else if (default_layer_state == AZEO_BASE){
+        //TODO: There should be a bug here (we should here enable the RGB_EO_GREEN). But for an unknown reason the
+        //behaviour is correct with this code. This is either a bug in the use of default_layer_state variable or a
+        //problem in how this variable is set.
+        color = rgb_std_blue;
+    }
+    else{
+        if(get_unicode_input_mode()== UNICODE_MODE_LINUX){
+            color = rgb_eo_green;
+        }
+        else if(get_unicode_input_mode()== UNICODE_MODE_WINCOMPOSE){
+            color = rgb_eowin_blue;
+        }
+        else if(get_unicode_input_mode() == UNICODE_MODE_MACOS){
+            color = rgb_eomac_white;
+        }
+    }
+    //Second part, apply it to the matrix elements.
+    for (uint8_t i = 0; i < size; i++) {
+        uint8_t key = main_mode_keys[i];
+        rgb_matrix_set_color(key, color[0], color[1], color[2]);
+    }
+}
+
+bool rgb_matrix_indicators_user() {
+    rgb_matrix_F1F12_indicators();
+    rgb_matrix_main_mode_keys();
     return false;
 }
 
