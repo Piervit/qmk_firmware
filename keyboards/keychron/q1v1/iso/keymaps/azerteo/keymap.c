@@ -29,16 +29,16 @@
 
 enum layers{
     /*FIXED LAYERS (because the MAC/Windows switch expect to find the layers a theses positions).*/
-  MAC_BASE,         //The original MAC layer. 
-  MAC_FN,           //The original MAC function layer 
-  WINAZ_BASE,       //The Windows/Linux original azerty layer (F1 to F12 keys modified to be a numeric keypad)
-  WINAZ_FN,         //The Windows/Linux azerty function layer with only a change to allow switching to AZEL_BASE.
+  MAC_BASE = 0,         //The original MAC layer. 
+  MAC_FN = 1,           //The original MAC function layer 
+  WINAZ_BASE = 2,       //The Windows/Linux original azerty layer (F1 to F12 keys modified to be a numeric keypad)
+  WINAZ_FN = 3,         //The Windows/Linux azerty function layer with only a change to allow switching to AZEL_BASE.
     /*FREE ADDITIONNAL LAYERS (that we order as we want).*/
-  AZEO_BASE,        //The Transformed azerteo layout (F1 to F12 keys modified to be a numeric keypad)
-  AZEO_FN,          //The function layer of the transformed azerteo layout.
-  FN_KEY,           //Set the F1..F12 layer to standard mod
-  MACEO_BASE,       //The MAC Esperanto layer
-  MACEO_FN,         //The MAC Esperanto function layer
+  AZEO_BASE = 4,        //The Transformed azerteo layout (F1 to F12 keys modified to be a numeric keypad)
+  AZEO_FN = 5,          //The function layer of the transformed azerteo layout.
+  FN_KEY = 6,           //Set the F1..F12 layer to standard mod
+  MACEO_BASE = 7,       //The MAC Esperanto layer
+  MACEO_FN = 8,         //The MAC Esperanto function layer
 };
 
 
@@ -242,10 +242,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 int rgb_no_light[]       = {0x00, 0x00, 0x00};
 int rgb_std_blue[]       = {0x00, 0x00, 0xFF}; // Red, standard azery mode
 int rgb_stdfn_blue[]     = {0x00, 0x20, 0xFF}; // Red, FN azery mode 
+int rgb_macfn_rose[]     = {0xFF, 0x4F, 0x4F}; // Red, MAC FN azery mode 
 int rgb_eo_green[]       = {0x00, 0xFF, 0x00}; // Green, EO Linux mode
 int rgb_eofn_green[]     = {0x00, 0xFF, 0x20}; // Green, EO FN Linux mode 
 int rgb_eowin_blue[]     = {0x00, 0xFF, 0xFF}; // Blue, EO windows mode
 int rgb_eowinfn_blue[]   = {0x20, 0xFF, 0xFF}; // Blue, EO FN windows mode 
+int rgb_mac_white[]      = {0xFF, 0x6F, 0x6F}; // White, EO mac mode
 int rgb_eomac_white[]    = {0xFF, 0xFF, 0xFF}; // White, EO mac mode
 int rgb_eomacfn_white[]  = {0xAA, 0xAA, 0xAA}; // Blue, EO FN mac mode 
 int rgb_basefn_white[]   = {0xFF, 0xFF, 0xFF}; // White, it means we use the classical F1-F12 keys.
@@ -279,13 +281,17 @@ void rgb_matrix_main_mode_keys(void){
     uint8_t main_mode_keys[] = {72, 80, 81, 82, 83};
     uint8_t size = sizeof(main_mode_keys)/sizeof(main_mode_keys[0]);
     int* color = rgb_no_light;
+    uint8_t cur_default_layer = get_highest_layer(default_layer_state);
     //First part, select the desired color.
     if (!rgb_matrix_is_enabled()){
         color = rgb_no_light;
     }
     //Manage the FN mods
-    else if (layer_state_is(WINAZ_FN) || layer_state_is(MAC_FN)){
+    else if (layer_state_is(WINAZ_FN)){
         color = rgb_stdfn_blue;
+    }
+    else if (layer_state_is(MAC_FN)){
+        color = rgb_macfn_rose;
     }
     else if (layer_state_is(AZEO_FN)){
         if(get_unicode_input_mode()== UNICODE_MODE_LINUX){
@@ -299,13 +305,13 @@ void rgb_matrix_main_mode_keys(void){
         }
     }
     //Manage the standards mods
-    else if (default_layer_state == AZEO_BASE){
-        //TODO: There should be a bug here (we should here enable the RGB_EO_GREEN). But for an unknown reason the
-        //behaviour is correct with this code. This is either a bug in the use of default_layer_state variable or a
-        //problem in how this variable is set.
+    else if (cur_default_layer == WINAZ_BASE){
         color = rgb_std_blue;
     }
-    else{
+    else if(cur_default_layer == MAC_BASE){
+        color = rgb_mac_white;
+    }
+    else{ //We are either in AZEL_BASE or MACEO_BASE, we then check the unicode mode.
         if(get_unicode_input_mode()== UNICODE_MODE_LINUX){
             color = rgb_eo_green;
         }
