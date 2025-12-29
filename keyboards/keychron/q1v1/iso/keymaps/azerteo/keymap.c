@@ -76,7 +76,6 @@ const uint32_t unicode_map[] PROGMEM = {
     [EO_CAU] = 0x0108,  // Ĉ
     [EO_HA]  = 0x0125,  // ĥ
     [EO_HAU] = 0x0124,  // Ĥ
-
 };
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%% END ESPERANTO UNICODE %%%%%%%%%%%%%%%%%%%%%%%%%%%% 
@@ -217,6 +216,9 @@ void keyboard_post_init_user(void) {
 
 /**
  * Callback called on a layer change.
+ * TODO: We could add a feature to this function to switch the correct UNICODE_SELECTED_MODES according to MAC or
+ * WINDOWS/LINUX layer.
+ *
  */
 layer_state_t layer_state_set_user(layer_state_t state) {
     switch (get_highest_layer(state)) {
@@ -230,35 +232,34 @@ layer_state_t layer_state_set_user(layer_state_t state) {
   return state;
 }
 
-led_t            saved_led_state;
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    return true; // Process all other keycodes normally
-}
+//bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+//    return true; // Process all other keycodes normally
+//}
 
 
 //%%%%%%%%%%%%%%%%%%%%%%%%% END KEYBOARD INIT FUNCTION %%%%%%%%%%%%%%%%%%%%%%%%%% 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% KEYBOARD LIGHTING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
-int rgb_no_light[]       = {0x00, 0x00, 0x00};
-int rgb_std_blue[]       = {0x00, 0x00, 0xFF}; // Red, standard azery mode
-int rgb_stdfn_blue[]     = {0x00, 0x20, 0xFF}; // Red, FN azery mode 
-int rgb_macfn_rose[]     = {0xFF, 0x4F, 0x4F}; // Red, MAC FN azery mode 
-int rgb_eo_green[]       = {0x00, 0xFF, 0x00}; // Green, EO Linux mode
-int rgb_eofn_green[]     = {0x00, 0xFF, 0x20}; // Green, EO FN Linux mode 
-int rgb_eowin_blue[]     = {0x00, 0xFF, 0xFF}; // Blue, EO windows mode
-int rgb_eowinfn_blue[]   = {0x20, 0xFF, 0xFF}; // Blue, EO FN windows mode 
-int rgb_mac_white[]      = {0xFF, 0x6F, 0x6F}; // White, EO mac mode
-int rgb_eomac_white[]    = {0xFF, 0xFF, 0xFF}; // White, EO mac mode
-int rgb_eomacfn_white[]  = {0xAA, 0xAA, 0xAA}; // Blue, EO FN mac mode 
-int rgb_basefn_white[]   = {0xFF, 0xFF, 0xFF}; // White, it means we use the classical F1-F12 keys.
-int rgb_basefn_blue[]    = {0x00, 0x00, 0xFF}; // Blue, it means wwe used the numeric keypad mod.
+uint8_t rgb_no_light[]       = {0x00, 0x00, 0x00};
+uint8_t rgb_std_blue[]       = {0x00, 0x00, 0xFF}; // Red, standard azery mode
+uint8_t rgb_stdfn_blue[]     = {0x00, 0x20, 0xFF}; // Red, FN azery mode 
+uint8_t rgb_macfn_rose[]     = {0xFF, 0x4F, 0x4F}; // Red, MAC FN azery mode 
+uint8_t rgb_eo_green[]       = {0x00, 0xFF, 0x00}; // Green, EO Linux mode
+uint8_t rgb_eofn_green[]     = {0x00, 0xFF, 0x20}; // Green, EO FN Linux mode 
+uint8_t rgb_eowin_blue[]     = {0x00, 0xFF, 0xFF}; // Blue, EO windows mode
+uint8_t rgb_eowinfn_blue[]   = {0x20, 0xFF, 0xFF}; // Blue, EO FN windows mode 
+uint8_t rgb_mac_white[]      = {0xFF, 0x6F, 0x6F}; // White, EO mac mode
+uint8_t rgb_eomac_white[]    = {0xFF, 0xFF, 0xFF}; // White, EO mac mode
+uint8_t rgb_eomacfn_white[]  = {0xAA, 0xAA, 0xAA}; // Blue, EO FN mac mode 
+uint8_t rgb_basefn_white[]   = {0xFF, 0xFF, 0xFF}; // White, it means we use the classical F1-F12 keys.
+uint8_t rgb_basefn_blue[]    = {0x00, 0x00, 0xFF}; // Blue, it means wwe used the numeric keypad mod.
 
 
 /*Manage the colors for the F1-F12 indicators. 
  * 
  * */
 void rgb_matrix_F1F12_indicators(void){
-    int* color = rgb_no_light;
+    uint8_t* color = rgb_no_light;
     //First part, select the desired color.
     if (!rgb_matrix_is_enabled()){
         color = rgb_no_light;
@@ -280,7 +281,7 @@ void rgb_matrix_F1F12_indicators(void){
 void rgb_matrix_main_mode_keys(void){
     uint8_t main_mode_keys[] = {72, 80, 81, 82, 83};
     uint8_t size = sizeof(main_mode_keys)/sizeof(main_mode_keys[0]);
-    int* color = rgb_no_light;
+    uint8_t* color = rgb_no_light;
     uint8_t cur_default_layer = get_highest_layer(default_layer_state);
     //First part, select the desired color.
     if (!rgb_matrix_is_enabled()){
