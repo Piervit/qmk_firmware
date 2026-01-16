@@ -321,7 +321,7 @@ __attribute__((weak)) void unicode_input_cancel(void) {
 // clang-format off
 
 static void send_nibble_wrapper(uint8_t digit) {
-    if (unicode_config.input_mode == UNICODE_MODE_WINDOWS || unicode_config.input_mode == UNICODE_MODE_WINCOMPOSE) {
+    if (unicode_config.input_mode == UNICODE_MODE_WINDOWS || unicode_config.input_mode == UNICODE_MODE_WINCOMPOSE || unicode_config.input_mode == UNICODE_MODE_LINUX) {
         uint8_t kc = digit < 10
                    ? KC_KP_1 + (10 + digit - 1) % 10
                    : KC_A + (digit - 10);
