@@ -30,15 +30,15 @@
 enum layers{
     /*FIXED LAYERS (because the MAC/Windows switch expect to find the layers a theses positions).*/
   MAC_BASE = 0,         //The original MAC layer. 
-  MAC_FN = 1,           //The original MAC function layer 
+  MAC_FN = 10,           //The original MAC function layer 
   WINAZ_BASE = 2,       //The Windows/Linux original azerty layer (F1 to F12 keys modified to be a numeric keypad)
-  WINAZ_FN = 3,         //The Windows/Linux azerty function layer with only a change to allow switching to AZEL_BASE.
+  WINAZ_FN = 11,         //The Windows/Linux azerty function layer with only a change to allow switching to AZEL_BASE.
     /*FREE ADDITIONNAL LAYERS (that we order as we want).*/
-  AZEO_BASE = 4,        //The Transformed azerteo layout (F1 to F12 keys modified to be a numeric keypad)
-  AZEO_FN = 5,          //The function layer of the transformed azerteo layout.
-  FN_KEY = 6,           //Set the F1..F12 layer to standard mod
-  MACEO_BASE = 7,       //The MAC Esperanto layer
-  MACEO_FN = 8,         //The MAC Esperanto function layer
+  FN_KEY = 9,           //Set the F1..F12 layer to standard mod
+  AZEO_BASE = 7,        //The Transformed azerteo layout (F1 to F12 keys modified to be a numeric keypad)
+  AZEO_FN = 12,          //The function layer of the transformed azerteo layout.
+  MACEO_BASE = 13,       //The MAC Esperanto layer
+  MACEO_FN = 14,         //The MAC Esperanto function layer
 };
 
 
