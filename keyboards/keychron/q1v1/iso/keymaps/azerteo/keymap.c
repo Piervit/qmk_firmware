@@ -135,7 +135,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCTL,        KC_LOPT,          KC_LCMD,                                KC_SPC,                                           KC_RCMD, MO(MACEO_FN),KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT),
     [MACEO_FN] = LAYOUT_iso_83(
         _______,            KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   _______,  _______,
-        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
+        DM_REC1,  DM_PLY1,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
         RM_TOGG,  RM_NEXT,  RM_VALU,  RM_HUEU,  RM_SATU,  RM_SPDU,  _______,  _______,  _______,  _______,  _______,  _______,  _______,                      _______,
         _______,  RM_PREV,  RM_VALD,  RM_HUED,  RM_SATD,  RM_SPDD,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  NK_TOGG,  _______,  _______,  _______,  _______,            _______,  _______,
@@ -150,11 +150,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCTL,  KC_LWIN,  KC_LALT,                                KC_SPC,                                 KC_RALT, MO(WINAZ_FN),KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT),
     [WINAZ_FN] = LAYOUT_iso_83(
             //Base Windows function layer with right control rebased to EO layer
-            //In a next version  KC_TASK and KC_FLXP should be replaced by others keys because they are not very
-            //important and they are OS dependant (non standard).
-     // _______,            KC_BRIU,  KC_BRID,  KC_TASK,  KC_FLXP,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_PSCR,  KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_SLEP,  _______,  _______,
-        _______,            KC_BRIU,  KC_BRID,  DM_REC1,  DM_PLY1,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_PSCR,  KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_SLEP,  _______,  _______,
-        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
+        _______,            KC_BRIU,  KC_BRID,  KC_TASK,  KC_FLXP,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_PSCR,  KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_SLEP,  _______,  _______,
+        DM_REC1,  DM_PLY1,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
         RM_TOGG,  RM_NEXT,  RM_VALU,  RM_HUEU,  RM_SATU,  RM_SPDU,  _______,  _______,  _______,  _______,  _______,  _______,  _______,                      _______,
         _______,  RM_PREV,  RM_VALD,  RM_HUED,  RM_SATD,  RM_SPDD,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  NK_TOGG,  _______,  _______,  _______,  _______,            _______,  _______,
@@ -170,7 +167,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [AZEO_FN] = LAYOUT_iso_83(
         _______,            KC_BRIU,  KC_BRID,  KC_TASK,  KC_FLXP,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_PSCR,  KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_SLEP,  _______,  _______,
-        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
+        DM_REC1,  DM_PLY1,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
         RM_TOGG,  RM_NEXT,  RM_VALU,  RM_HUEU,  RM_SATU,  RM_SPDU,  _______,  _______,  _______,  _______,  _______,  _______,  _______,                      _______,
         _______,  RM_PREV,  RM_VALD,  RM_HUED,  RM_SATD,  RM_SPDD,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  NK_TOGG,  _______,  _______,  _______,  _______,            _______,  _______,
