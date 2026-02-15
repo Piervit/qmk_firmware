@@ -111,7 +111,7 @@ const key_override_t *key_overrides[] = {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [MAC_BASE] = LAYOUT_iso_83(
             //Base MAC layer
-        KC_ESC,             KC_BRID,  KC_BRIU,  KC_NO,    KC_NO,    RM_VALD,  RM_VALU,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_DEL,   KC_INS,
+        KC_ESC,             KC_BRID,  KC_BRIU,  KC_NO,    KC_NO,    RM_VALD,  RM_VALU,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_DEL,   KC_LCTL,
         KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,            KC_PGUP,
         KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,                      KC_PGDN,
         KC_CAPS,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,  KC_NUHS,  KC_ENT,             KC_HOME,
@@ -127,7 +127,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  NK_TOGG,  _______,  _______,  _______,  _______,                  _______,  _______,
         _______,  _______,  _______,                                _______,                                _______,  _______,  DF(MACEO_BASE), _______,  _______,  _______),
     [MACEO_BASE] = LAYOUT_iso_83(
-        KC_ESC,         KC_BRIU,          KC_BRID,  KC_TASK,          KC_FLXP,  KC_MPRV,  KC_MPLY,            KC_MNXT,  KC_PSCR,  KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_SLEP,  KC_DEL,             KC_INS,
+        KC_ESC,         KC_BRIU,          KC_BRID,  KC_TASK,          KC_FLXP,  KC_MPRV,  KC_MPLY,            KC_MNXT,  KC_PSCR,  KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_SLEP,  KC_DEL,             KC_LCTL,
         LSFT(KC_QUOT),  KC_1,             KC_2,     KC_3,             KC_4,     KC_5,     KC_6,               KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,            KC_PGUP,
         KC_TAB,         KC_Q,             KC_W,     KC_E,             KC_R,     KC_T,     UP(EO_UA,EO_UAU),   KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  UP(EO_STR,KC_RBRC),           KC_PGDN,
         KC_CAPS,        UP(EO_SA,EO_SAU), KC_S,     KC_D,             KC_F,     KC_G,     UP(EO_GA, EO_GAU),  KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,  KC_NUHS,  KC_ENT,             KC_HOME,
@@ -142,7 +142,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,  UC_NEXT,  _______,                                _______,                                _______,  _______,  DF(MAC_BASE),  _______,  _______,  _______),
     [WINAZ_BASE] = LAYOUT_iso_83(
             //Base Windows layer
-        KC_ESC,             KC_P1,    KC_P2,    KC_P3,    KC_P4,    KC_P5,    KC_P6,    KC_P7,    KC_P8,    KC_P9,    KC_P0,    KC_PPLS,  KC_PAST,   KC_DEL,  KC_INS,
+        KC_ESC,             KC_P1,    KC_P2,    KC_P3,    KC_P4,    KC_P5,    KC_P6,    KC_P7,    KC_P8,    KC_P9,    KC_P0,    KC_PPLS,  KC_PAST,   KC_DEL,  KC_LCTL,
         KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,            KC_PGUP,
         KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,                      KC_PGDN,
         KC_CAPS,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,  KC_NUHS,  KC_ENT,             KC_HOME,
@@ -158,7 +158,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         DB_TOGG,  _______,  _______,                                _______,                                TG(FN_KEY), _______,  DF(AZEO_BASE),  _______,  _______,  _______),
     [AZEO_BASE] = LAYOUT_iso_83(
             //New azerty EO layer. Mostly azerty layer with some rebase for EO keys
-        KC_ESC,         KC_P1,            KC_P2, KC_P3,              KC_P4,    KC_P5,    KC_P6,              KC_P7,    KC_P8,    KC_P9,    KC_P0 ,   KC_PPLS,            KC_PAST,  KC_DEL,             KC_INS,
+        KC_ESC,         KC_P1,            KC_P2, KC_P3,              KC_P4,    KC_P5,    KC_P6,              KC_P7,    KC_P8,    KC_P9,    KC_P0 ,   KC_PPLS,            KC_PAST,  KC_DEL,             KC_LCTL,
         LSFT(KC_QUOT),  KC_1,             KC_2,  KC_3,               KC_4,     KC_5,     KC_6,               KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,            KC_EQL,   KC_BSPC,            KC_PGUP,
         KC_TAB,         KC_Q,             KC_W,  KC_E,               KC_R,     KC_T,     UP(EO_UA,EO_UAU),   KC_U,     KC_I,     KC_O,     KC_P,     KC_NUBS,            UP(EO_STR,KC_RBRC),                      KC_PGDN,
         KC_CAPS,        UP(EO_SA,EO_SAU), KC_S,  KC_D,               KC_F,     KC_G,     UP(EO_GA, EO_GAU),  KC_J,     KC_K,     KC_L,     KC_SCLN,  UP(EO_JA, EO_JAU),  KC_NUHS,  KC_ENT,             KC_HOME,
@@ -339,3 +339,17 @@ bool rgb_matrix_indicators_user() {
 }
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END KEYBOARD LIGHTING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% KNOB ENCODER  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+//
+bool encoder_update_user(uint8_t index, bool clockwise) {
+    if (index == 0) { /* First encoder */
+        if (clockwise) {
+            tap_code(MS_WHLU);
+        } else {
+            tap_code(MS_WHLD);
+        }
+    } 
+    return false;
+}
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END KNOB ENCODER  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 

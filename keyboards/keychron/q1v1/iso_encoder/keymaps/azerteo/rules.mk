@@ -5,4 +5,4 @@ KEY_OVERRIDE_ENABLE = yes
 
 DYNAMIC_MACRO_ENABLE = yes
 #For managing the knob.
-#ENCODER_ENABLE = yes
+ENCODER_ENABLE = yes

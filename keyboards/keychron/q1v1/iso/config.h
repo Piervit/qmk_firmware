@@ -30,5 +30,4 @@
 
 #define DYNAMIC_MACRO_SIZE 64
 
-//#define ENCODER_A_PINS { B12 }
-//#define ENCODER_B_PINS { B13 }
+
