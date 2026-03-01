@@ -26,9 +26,9 @@
     "rgb_matrix": {
         "animations": {
             "band_spiral_val": false,
-            "breathing": true,
-            "cycle_all": true,
-            "cycle_left_right": true,
+            "breathing": false,
+            "cycle_all": false,
+            "cycle_left_right": false,
             "cycle_out_in": true,
             "cycle_out_in_dual": true,
             "cycle_pinwheel": false,

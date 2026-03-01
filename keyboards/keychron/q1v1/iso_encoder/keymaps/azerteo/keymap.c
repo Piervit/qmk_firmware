@@ -96,6 +96,22 @@ const key_override_t ctrl_y_override = ko_make_basic(MOD_MASK_CTRL, UP(EO_UA,EO_
 const key_override_t ctrl_q_override = ko_make_basic(MOD_MASK_CTRL, UP(EO_SA,EO_SAU), LCTL(KC_A));
 const key_override_t ctrl_x_override = ko_make_basic(MOD_MASK_CTRL, UP(EO_CA,EO_CAU), LCTL(KC_X));
 
+
+/**
+ * We Want MAJ+1 to just type 1.
+ **/
+
+const key_override_t shift_1_override = ko_make_basic(MOD_MASK_SHIFT, KC_P1, KC_P1);
+const key_override_t shift_2_override = ko_make_basic(MOD_MASK_SHIFT, KC_P2, KC_P2);
+const key_override_t shift_3_override = ko_make_basic(MOD_MASK_SHIFT, KC_P3, KC_P3);
+const key_override_t shift_4_override = ko_make_basic(MOD_MASK_SHIFT, KC_P4, KC_P4);
+const key_override_t shift_5_override = ko_make_basic(MOD_MASK_SHIFT, KC_P5, KC_P5);
+const key_override_t shift_6_override = ko_make_basic(MOD_MASK_SHIFT, KC_P6, KC_P6);
+const key_override_t shift_7_override = ko_make_basic(MOD_MASK_SHIFT, KC_P7, KC_P7);
+const key_override_t shift_8_override = ko_make_basic(MOD_MASK_SHIFT, KC_P8, KC_P8);
+const key_override_t shift_9_override = ko_make_basic(MOD_MASK_SHIFT, KC_P9, KC_P9);
+const key_override_t shift_0_override = ko_make_basic(MOD_MASK_SHIFT, KC_P0, KC_P0);
+
 // This globally defines all key overrides to be used
 const key_override_t *key_overrides[] = {
     	&minus_key_override,
@@ -103,7 +119,17 @@ const key_override_t *key_overrides[] = {
         &ctrl_w_override,
         &ctrl_y_override,
         &ctrl_q_override,
-        &ctrl_x_override
+        &ctrl_x_override,
+        &shift_0_override,
+        &shift_1_override,
+        &shift_2_override,
+        &shift_3_override,
+        &shift_4_override,
+        &shift_5_override,
+        &shift_6_override,
+        &shift_7_override,
+        &shift_8_override,
+        &shift_9_override
 };
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END KEY OVERRIDING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LAYERS DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
