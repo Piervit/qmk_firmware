@@ -30,4 +30,4 @@
 
 #define DYNAMIC_MACRO_SIZE 64
 
-
+#define SECURE_IDLE_TIMEOUT 5

@@ -21,6 +21,8 @@
 
 #include QMK_KEYBOARD_H
 #include "unicode.h"
+//#include "secure.h"
+#include "keymap_introspection.h"
 
 #define KC_TASK LGUI(KC_TAB)
 #define KC_FLXP LGUI(KC_E)
@@ -132,6 +134,21 @@ const key_override_t *key_overrides[] = {
         &shift_9_override
 };
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END KEY OVERRIDING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%% TAP DANCE DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+// Enums of the key using tap dance.
+enum {
+    TD_C,
+    TD_P,
+    TD_H,
+    TD_U,
+    TD_B,
+    TD_K,
+    TD_Y,
+    TD_S,
+    TD_O,
+};
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%% END DANCE DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LAYERS DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 //
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -170,9 +187,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
             //Base Windows layer
         KC_ESC,             KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11 ,  KC_F12 ,   KC_DEL,  KC_LCTL,
         KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,            KC_PGUP,
-        KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,                      KC_PGDN,
-        KC_CAPS,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,  KC_NUHS,  KC_ENT,             KC_HOME,
-        KC_LSFT,  KC_NUBS,  KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,            KC_RSFT,  KC_UP,
+        KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     TD(TD_Y), TD(TD_U) ,KC_I,     TD(TD_O), TD(TD_P), KC_LBRC,  KC_RBRC,                      KC_PGDN,
+        KC_CAPS,  KC_A,     TD(TD_S), KC_D,     KC_F,     KC_G,     TD(TD_H), KC_J,     TD(TD_K), KC_L,     KC_SCLN,  KC_QUOT,  KC_NUHS,  KC_ENT,             KC_HOME,
+        KC_LSFT,  KC_NUBS,  KC_Z,     KC_X,     TD(TD_C), KC_V,     TD(TD_B), KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,            KC_RSFT,  KC_UP,
         KC_LCTL,  KC_LWIN,  KC_LALT,                                KC_SPC,                                 KC_RALT, MO(WINAZ_FN),KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT),
     [WINAZ_FN] = LAYOUT_iso_83(
             //Base Windows function layer with right control rebased to EO layer
@@ -240,6 +257,7 @@ void keyboard_post_init_user(void) {
   //debug_keyboard=true;
   //debug_mouse=true;
   numlock_on();
+  secure_task();
 }
 
 /**
@@ -256,12 +274,113 @@ layer_state_t layer_state_set_user(layer_state_t state) {
   return state;
 }
 
-//bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-//    return true; // Process all other keycodes normally
-//}
-
 
 //%%%%%%%%%%%%%%%%%%%%%%%%% END KEYBOARD INIT FUNCTION %%%%%%%%%%%%%%%%%%%%%%%%%% 
+//%%%%%%%%%%%%%%%%%%%%%%%%% TAP DANCE FUNCTION %%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+//    TD_C_COPY, // git commit
+//    TD_P_COPY, // git pull
+//    TD_H_COPY, // git push
+//    TD_U_COPY, // git push -u origin 
+//    TD_B_COPY, // git checkout -b 
+//    TD_K_COPY, // git checkout 
+//    TD_Y_COPY, // git cherry-pick
+//    TD_S_COPY, // git stash save
+//    TD_O_COPY, // git stash pop
+
+void hold_map_translate(uint16_t code){ 
+    switch (code){
+        case KC_C: 
+            SEND_STRING("git co;;it "); break;
+        case KC_P: 
+            SEND_STRING("git pull "); break;
+        case KC_H: 
+            SEND_STRING("git push "); break;
+        case KC_U: 
+            SEND_STRING("git push 6u origin "); break;
+        case KC_B: 
+            SEND_STRING("git checkout 6b "); break;
+        case KC_K: 
+            SEND_STRING("git checkout "); break;
+        case KC_Y: 
+            SEND_STRING("git cherry6pick "); break;
+        case KC_S: 
+            SEND_STRING("git stqsh sqve "); break;
+        case KC_O: 
+            SEND_STRING("git stqsh pop "); break;
+    }
+}
+
+typedef struct {
+    uint16_t tap;
+} tap_dance_tap_hold_t;
+
+void tap_dance_tap_hold_finished(tap_dance_state_t *state, void *user_data) {
+    tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)user_data;
+
+    if (state->pressed) {
+        if (state->count == 1
+#ifndef PERMISSIVE_HOLD
+            && !state->interrupted
+#endif
+        ) {
+            hold_map_translate(tap_hold->tap);
+            //switch (tap_hold->tap){
+            //    case KC_C:
+            //        SEND_STRING("git commit ");
+            //        break:
+            //}
+        } else {
+            register_code16(tap_hold->tap);
+        }
+    }
+}
+
+#define ACTION_TAP_DANCE_TAP_HOLD(tap)                                        \
+    {                                                                               \
+        .fn        = {NULL, tap_dance_tap_hold_finished},                           \
+        .user_data = (void *)&((tap_dance_tap_hold_t){tap}),                  \
+    }
+tap_dance_action_t tap_dance_actions[] = {
+    [TD_C] = ACTION_TAP_DANCE_TAP_HOLD(KC_C),
+    [TD_P] = ACTION_TAP_DANCE_TAP_HOLD(KC_P),
+    [TD_H] = ACTION_TAP_DANCE_TAP_HOLD(KC_H),
+    [TD_U] = ACTION_TAP_DANCE_TAP_HOLD(KC_U),
+    [TD_B] = ACTION_TAP_DANCE_TAP_HOLD(KC_B),
+    [TD_K] = ACTION_TAP_DANCE_TAP_HOLD(KC_K),
+    [TD_Y] = ACTION_TAP_DANCE_TAP_HOLD(KC_Y),
+    [TD_S] = ACTION_TAP_DANCE_TAP_HOLD(KC_S),
+    [TD_O] = ACTION_TAP_DANCE_TAP_HOLD(KC_O),
+
+};
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    tap_dance_action_t *action;
+    tap_dance_state_t* state;
+
+    switch (keycode) {
+        case TD(TD_C):
+        case TD(TD_P):
+        case TD(TD_H):
+        case TD(TD_U):
+        case TD(TD_B):
+        case TD(TD_K):
+        case TD(TD_Y):
+        case TD(TD_S):
+        case TD(TD_O):
+            action = tap_dance_get(QK_TAP_DANCE_GET_INDEX(keycode));
+            state = tap_dance_get_state(QK_TAP_DANCE_GET_INDEX(keycode));
+            if (!record->event.pressed && state != NULL && state->count && !state->finished) {
+                tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
+                tap_code16(tap_hold->tap);
+            }
+    }
+    return true;
+}
+
+
+
+//%%%%%%%%%%%%%%%%%%%%%%%%% END TAP DANCE FUNCTION %%%%%%%%%%%%%%%%%%%%%%%%%% 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% KEYBOARD LIGHTING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
 uint8_t rgb_no_light[]       = {0x00, 0x00, 0x00};
