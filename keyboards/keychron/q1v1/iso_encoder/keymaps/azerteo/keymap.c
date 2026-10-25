@@ -1,4 +1,4 @@
-/* Copyright 2025 @ Pierre Vittet 
+/* Copyright 2025 @ Pierre Vittet
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,15 +27,16 @@
 #define KC_TASK LGUI(KC_TAB)
 #define KC_FLXP LGUI(KC_E)
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LAYERS DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LAYERS DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 enum layers{
     /*FIXED LAYERS (because the MAC/Windows switch expect to find the layers a theses positions).*/
-  MAC_BASE = 0,         //The original MAC layer. 
-  MAC_FN = 10,           //The original MAC function layer 
+  MAC_BASE = 0,         //The original MAC layer.
+  MAC_FN = 10,           //The original MAC function layer
   WINAZ_BASE = 2,       //The Windows/Linux original azerty layer (F1 to F12 keys modified to be a numeric keypad)
   WINAZ_FN = 11,         //The Windows/Linux azerty function layer with only a change to allow switching to AZEL_BASE.
     /*FREE ADDITIONNAL LAYERS (that we order as we want).*/
+  WINAZ_SHORTCUT = 5,       //Idem to WINAZ_BASE but with the tap dance modifiers (old C will write 'git commit .')
   FN_KEY = 9,           //Set the F1..F12 layer to standard mod
   AZEO_BASE = 7,        //The Transformed azerteo layout (F1 to F12 keys modified to be a numeric keypad)
   AZEO_FN = 12,          //The function layer of the transformed azerteo layout.
@@ -44,9 +45,9 @@ enum layers{
 };
 
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%% END LAYERS DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%% END LAYERS DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ESPERANTO UNICODE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ESPERANTO UNICODE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 /**
  * The specific esperanto letters with accent, using unicode code.
  */
@@ -82,8 +83,8 @@ const uint32_t unicode_map[] PROGMEM = {
     [EO_STR] = 0x272D,  // Star
 };
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%% END ESPERANTO UNICODE %%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% KEY OVERRIDING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%% END ESPERANTO UNICODE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% KEY OVERRIDING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 /**
  * The following override will make the usual CTRL+W, CTRL+Y, CTRL_Q, CTRL_X work as usual even if the key has been bind
@@ -133,8 +134,8 @@ const key_override_t *key_overrides[] = {
         &shift_8_override,
         &shift_9_override
 };
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END KEY OVERRIDING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%% TAP DANCE DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END KEY OVERRIDING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%% TAP DANCE DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // Enums of the key using tap dance.
 enum {
     TD_C,
@@ -148,8 +149,8 @@ enum {
     TD_O,
 };
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%% END DANCE DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LAYERS DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%% END DANCE DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LAYERS DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 //
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [MAC_BASE] = LAYOUT_iso_83(
@@ -187,15 +188,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
             //Base Windows layer
         KC_ESC,             KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11 ,  KC_F12 ,   KC_DEL,  KC_LCTL,
         KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,            KC_PGUP,
+        KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U ,    KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,                      KC_PGDN,
+        KC_CAPS,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,  KC_NUHS,  KC_ENT,             KC_HOME,
+        KC_LSFT,  KC_NUBS,  KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,            KC_RSFT,  KC_UP,
+        KC_LCTL,  KC_LWIN,  KC_LALT,                                KC_SPC,                                 KC_RALT, MO(WINAZ_FN),KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT),
+    [WINAZ_SHORTCUT] = LAYOUT_iso_83(
+            //Base Windows layer
+        KC_ESC,             KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11 ,  KC_F12 ,   KC_DEL,  KC_LCTL,
+        KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,            KC_PGUP,
         KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     TD(TD_Y), TD(TD_U) ,KC_I,     TD(TD_O), TD(TD_P), KC_LBRC,  KC_RBRC,                      KC_PGDN,
         KC_CAPS,  KC_A,     TD(TD_S), KC_D,     KC_F,     KC_G,     TD(TD_H), KC_J,     TD(TD_K), KC_L,     KC_SCLN,  KC_QUOT,  KC_NUHS,  KC_ENT,             KC_HOME,
         KC_LSFT,  KC_NUBS,  KC_Z,     KC_X,     TD(TD_C), KC_V,     TD(TD_B), KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,            KC_RSFT,  KC_UP,
         KC_LCTL,  KC_LWIN,  KC_LALT,                                KC_SPC,                                 KC_RALT, MO(WINAZ_FN),KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT),
+
     [WINAZ_FN] = LAYOUT_iso_83(
             //Base Windows function layer with right control rebased to EO layer
         _______,            KC_BRIU,  KC_BRID,  KC_TASK,  KC_FLXP,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_PSCR,  KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_SLEP,  _______,  _______,
-        DM_REC1,  DM_PLY1,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
-        RM_TOGG,  RM_NEXT,  RM_VALU,  RM_HUEU,  RM_SATU,  RM_SPDU,  _______,  _______,  _______,  _______,  _______,  _______,  _______,                      _______,
+        DM_REC1,  DM_PLY1,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            DF(WINAZ_SHORTCUT),
+        RM_TOGG,  RM_NEXT,  RM_VALU,  RM_HUEU,  RM_SATU,  RM_SPDU,  _______,  _______,  _______,  _______,  _______,  _______,  _______,                      DF(WINAZ_BASE),
         _______,  RM_PREV,  RM_VALD,  RM_HUED,  RM_SATD,  RM_SPDD,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  NK_TOGG,  _______,  _______,  _______,  _______,            _______,  _______,
         DB_TOGG,  _______,  _______,                                _______,                                TG(FN_KEY), _______,  DF(AZEO_BASE),  _______,  _______,  _______),
@@ -226,7 +236,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%% END LAYERS DEFINITION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%% KEYBOARD INIT FUNCTION %%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%% KEYBOARD INIT FUNCTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 /**
  * Check if num lock is activated, else activate it. We use num lock for several reason:
@@ -275,38 +285,38 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 }
 
 
-//%%%%%%%%%%%%%%%%%%%%%%%%% END KEYBOARD INIT FUNCTION %%%%%%%%%%%%%%%%%%%%%%%%%% 
-//%%%%%%%%%%%%%%%%%%%%%%%%% TAP DANCE FUNCTION %%%%%%%%%%%%%%%%%%%%%%%%%% 
+//%%%%%%%%%%%%%%%%%%%%%%%%% END KEYBOARD INIT FUNCTION %%%%%%%%%%%%%%%%%%%%%%%%%%
+//%%%%%%%%%%%%%%%%%%%%%%%%% TAP DANCE FUNCTION %%%%%%%%%%%%%%%%%%%%%%%%%%
 
 //    TD_C_COPY, // git commit
 //    TD_P_COPY, // git pull
 //    TD_H_COPY, // git push
-//    TD_U_COPY, // git push -u origin 
-//    TD_B_COPY, // git checkout -b 
-//    TD_K_COPY, // git checkout 
+//    TD_U_COPY, // git push -u origin
+//    TD_B_COPY, // git checkout -b
+//    TD_K_COPY, // git checkout
 //    TD_Y_COPY, // git cherry-pick
 //    TD_S_COPY, // git stash save
 //    TD_O_COPY, // git stash pop
 
-void hold_map_translate(uint16_t code){ 
+void hold_map_translate(uint16_t code){
     switch (code){
-        case KC_C: 
-            SEND_STRING("git co;;it "); break;
-        case KC_P: 
+        case KC_C:
+            SEND_STRING("git co;;it <"); break;
+        case KC_P:
             SEND_STRING("git pull "); break;
-        case KC_H: 
+        case KC_H:
             SEND_STRING("git push "); break;
-        case KC_U: 
+        case KC_U:
             SEND_STRING("git push 6u origin "); break;
-        case KC_B: 
+        case KC_B:
             SEND_STRING("git checkout 6b "); break;
-        case KC_K: 
+        case KC_K:
             SEND_STRING("git checkout "); break;
-        case KC_Y: 
+        case KC_Y:
             SEND_STRING("git cherry6pick "); break;
-        case KC_S: 
+        case KC_S:
             SEND_STRING("git stqsh sqve "); break;
-        case KC_O: 
+        case KC_O:
             SEND_STRING("git stqsh pop "); break;
     }
 }
@@ -380,26 +390,26 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 
 
-//%%%%%%%%%%%%%%%%%%%%%%%%% END TAP DANCE FUNCTION %%%%%%%%%%%%%%%%%%%%%%%%%% 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% KEYBOARD LIGHTING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+//%%%%%%%%%%%%%%%%%%%%%%%%% END TAP DANCE FUNCTION %%%%%%%%%%%%%%%%%%%%%%%%%%
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% KEYBOARD LIGHTING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 uint8_t rgb_no_light[]       = {0x00, 0x00, 0x00};
 uint8_t rgb_std_blue[]       = {0x00, 0x00, 0xFF}; // Red, standard azery mode
-uint8_t rgb_stdfn_blue[]     = {0x00, 0x20, 0xFF}; // Red, FN azery mode 
-uint8_t rgb_macfn_rose[]     = {0xFF, 0x4F, 0x4F}; // Red, MAC FN azery mode 
+uint8_t rgb_stdfn_blue[]     = {0x00, 0x20, 0xFF}; // Red, FN azery mode
+uint8_t rgb_macfn_rose[]     = {0xFF, 0x4F, 0x4F}; // Red, MAC FN azery mode
 uint8_t rgb_eo_green[]       = {0x00, 0xFF, 0x00}; // Green, EO Linux mode
-uint8_t rgb_eofn_green[]     = {0x00, 0xFF, 0x20}; // Green, EO FN Linux mode 
+uint8_t rgb_eofn_green[]     = {0x00, 0xFF, 0x20}; // Green, EO FN Linux mode
 uint8_t rgb_eowin_blue[]     = {0x00, 0xFF, 0xFF}; // Blue, EO windows mode
-uint8_t rgb_eowinfn_blue[]   = {0x20, 0xFF, 0xFF}; // Blue, EO FN windows mode 
+uint8_t rgb_eowinfn_blue[]   = {0x20, 0xFF, 0xFF}; // Blue, EO FN windows mode
 uint8_t rgb_mac_white[]      = {0xFF, 0x6F, 0x6F}; // White, EO mac mode
 uint8_t rgb_eomac_white[]    = {0xFF, 0xFF, 0xFF}; // White, EO mac mode
-uint8_t rgb_eomacfn_white[]  = {0xAA, 0xAA, 0xAA}; // Blue, EO FN mac mode 
+uint8_t rgb_eomacfn_white[]  = {0xAA, 0xAA, 0xAA}; // Blue, EO FN mac mode
 uint8_t rgb_basefn_white[]   = {0xFF, 0xFF, 0xFF}; // White, it means we use the classical F1-F12 keys.
 uint8_t rgb_basefn_blue[]    = {0x00, 0x00, 0xFF}; // Blue, it means wwe used the numeric keypad mod.
 
 
-/*Manage the colors for the F1-F12 indicators. 
- * 
+/*Manage the colors for the F1-F12 indicators.
+ *
  * */
 void rgb_matrix_F1F12_indicators(void){
     uint8_t* color = rgb_no_light;
@@ -410,7 +420,7 @@ void rgb_matrix_F1F12_indicators(void){
     else if(layer_state_is(FN_KEY)) {
         color = rgb_basefn_blue;
     }
-    else{ 
+    else{
         color = rgb_basefn_white;
     }
     uint8_t upper_line_last_led = 14;
@@ -479,8 +489,8 @@ bool rgb_matrix_indicators_user() {
     return false;
 }
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END KEYBOARD LIGHTING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% KNOB ENCODER  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END KEYBOARD LIGHTING %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% KNOB ENCODER  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 //
 bool encoder_update_user(uint8_t index, bool clockwise) {
     if (index == 0) { /* First encoder */
@@ -489,8 +499,8 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
         } else {
             tap_code(MS_WHLD);
         }
-    } 
+    }
     return false;
 }
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END KNOB ENCODER  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END KNOB ENCODER  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
