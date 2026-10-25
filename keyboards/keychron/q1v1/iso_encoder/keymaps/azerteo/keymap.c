@@ -459,7 +459,7 @@ void rgb_matrix_main_mode_keys(void){
         }
     }
     //Manage the standards mods
-    else if (cur_default_layer == WINAZ_BASE){
+    else if (cur_default_layer == WINAZ_BASE || cur_default_layer == WINAZ_SHORTCUT){
         color = rgb_std_blue;
     }
     else if(cur_default_layer == MAC_BASE){
